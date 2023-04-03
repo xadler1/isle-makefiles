@@ -7,7 +7,7 @@ lindat-dan: generate-secrets
 	$(MAKE) lindat-dan-init ENVIRONMENT=starter_dev
 	if [ -z "$$(ls -A $(QUOTED_CURDIR)/codebase)" ]; then \
 		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b main https://github.com/xadler1/dan-test.git /home/root;'; \
-		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b main https://github.com/xadler1/test-digitalia-modules.git /home/root;'; \
+		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b main https://github.com/xadler1/digitalia-modules-test.git /home/root;'; \
 	fi
 	$(MAKE) set-files-owner SRC=$(CURDIR)/codebase ENVIRONMENT=starter_dev
 	docker-compose up -d --remove-orphans
