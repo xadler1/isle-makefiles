@@ -8,6 +8,7 @@ lindat-bp: generate-secrets
 	if [ -z "$$(ls -A $(QUOTED_CURDIR)/codebase)" ]; then \
 		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b main https://github.com/xadler1/bp-test.git /home/root;'; \
 		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b main https://github.com/xadler1/digitalia-modules-test.git /tmp/codebase; mv /tmp/codebase/* /home/root/'; \
+		docker container run --rm -v $(CURDIR)/codebase:/home/root $(REPOSITORY)/nginx:$(TAG) with-contenv bash -lc 'git clone -b bp https://github.com/xadler1/digitalia-themes-test.git /tmp/codebase; mv /tmp/codebase/web/themes/* /home/root/web/themes/'; \
 	fi
 	$(MAKE) set-files-owner SRC=$(CURDIR)/codebase ENVIRONMENT=starter_dev
 	docker-compose up -d --remove-orphans
@@ -21,8 +22,3 @@ lindat-bp-init:
 .PHONY: lindat-bp-finalize
 lindat-bp-finalize:
 	$(MAKE) starter-finalize ENVIRONMENT=starter_dev
-	$(MAKE) lindat-bp-theme
-
-.PHONY: lindat-bp-theme
-lindat-bp-theme:
-	docker-compose exec -T drupal with-contenv bash -lc "git clone -b bp https://github.com/xadler1/digitalia-themes-test.git /tmp/themes; cp -r /tmp/themes/* /var/www/drupal/; chown -R nginx:nginx /var/www/drupal/web/themes/* ; rm -rf /tmp/themes; drush cr"
