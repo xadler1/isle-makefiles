@@ -22,3 +22,9 @@ lindat-bp-init:
 .PHONY: lindat-bp-finalize
 lindat-bp-finalize:
 	$(MAKE) starter-finalize ENVIRONMENT=starter_dev
+	$(MAKE) lindat-bp-libraries
+
+
+.PHONY: lindat-bp-libraries
+lindat-bp-libraries:
+	docker-compose exec -T drupal with-contenv bash -lc "drush chosenplugin"
